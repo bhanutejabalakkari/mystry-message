@@ -43,7 +43,9 @@ function Page() {
             setIsCheckingUsername(true);
             setUsernameMessage("");
             try {
-                const response = await axios.get(`/api/check-username-unique?username=${username}`);
+                const response = await axios.post("/api/check-username-unique", {
+                    clientUsername: username
+                });
                 setUsernameMessage(response.data.message);
             } catch (error) {
                 
