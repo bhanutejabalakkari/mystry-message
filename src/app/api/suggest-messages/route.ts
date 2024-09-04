@@ -1,11 +1,9 @@
 import OpenAI from 'openai';
 import { google } from "@ai-sdk/google"
-import { OpenAIStream, StreamingTextResponse, generateText, streamText } from 'ai';
+import { streamText } from 'ai';
 import { NextResponse } from 'next/server';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+
 
 export const runtime = 'edge';
 
