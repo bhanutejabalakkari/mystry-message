@@ -22,8 +22,10 @@ export async function DELETE( request: Request, { params }: { params: { messageI
     const user = session.user as User;
 
     try {
+        console.log("The Deleting message id is --> ", messageId);
+        
         const updateResult = await UserModel.updateOne(
-            { id: user._id },
+            { _id: new mongoose.Types.ObjectId(user._id) },
             { $pull: { messages: { _id: messageId } } }
         )
         if (updateResult.modifiedCount === 0) {

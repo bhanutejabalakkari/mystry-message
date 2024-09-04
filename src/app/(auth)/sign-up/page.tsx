@@ -46,10 +46,8 @@ function Page() {
                 const response = await axios.get(`/api/check-username-unique?username=${username}`);
                 setUsernameMessage(response.data.message);
             } catch (error) {
-                console.log("In Error of Check username Input");
                 
                 const axiosError = error as AxiosError<ApiResponse>;
-                console.log("The error is --> ", axiosError.response?.data.message);
                 
                 setUsernameMessage(axiosError.response?.data.message ?? "Error while checking username");
             } finally {
@@ -91,8 +89,8 @@ function Page() {
 
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-800 mt-9">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="flex justify-center items-center min-h-screen bg-white">
+            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg border-[1.9px] border-gray-300">
 
                 <div className="text-center">
                     <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Join Mystry Message</h1>

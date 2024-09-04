@@ -1,6 +1,7 @@
 'use client'
 
 import MessageCard from "@/components/MessageCard";
+import SkeletonLoader from "@/components/SkeletonLoader";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
@@ -20,13 +21,23 @@ import * as z from "zod";
 
 function DashboardPage() {
 
+    
+
     const [ messages, setMessages ] = useState<Message[]>([]);
     const [ isLoading, setIsLoading ] = useState(false);
     const [ isSwitchLoading, setIsSwitchLoading ] = useState(false);
     const router = useRouter();
     
     const { toast } = useToast();
-    const { data: session } = useSession();
+    const { data: session, status } = useSession({
+        required: true,
+        onUnauthenticated() {
+            router.replace("/sign-in");
+        },
+    });
+
+        
+    
 
     const { register, watch, setValue } = useForm<z.infer<typeof acceptMessageSchema>>({
         resolver: zodResolver(acceptMessageSchema),
@@ -47,6 +58,7 @@ function DashboardPage() {
 
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
+            
             toast({
                 title: "Error",
                 description: axiosError.response?.data.message || "Failed to fetch message settings",
@@ -72,10 +84,12 @@ function DashboardPage() {
             }
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
+            const variant = axiosError.response?.data.message === "No messages found" ? "default" : "destructive";
+
             toast({
                 title: "Error",
                 description: axiosError.response?.data.message || "Failed to fetch message settings",
-                variant: "destructive"
+                variant
             })
         } finally {
             setIsLoading(false);
@@ -107,15 +121,13 @@ function DashboardPage() {
 
     useEffect(() => {
         if (!session || !session.user) return
+        
         fetchMessages()
         fetchAcceptMessage()
     }, [session, setValue, fetchAcceptMessage, fetchMessages])
     
-    
-    
-    if (!session || !session.user) {
-        router.replace("/sign-in")
-        return <div>Please Login</div>
+    if (status === "loading") {
+        return <SkeletonLoader />
     }
 
     const { username } = session.user as User;
@@ -130,9 +142,11 @@ function DashboardPage() {
         })
     }
 
+    
+
 
     return (
-        <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+        <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white shadow-lg rounded-lg w-full max-w-6xl">
             <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
     
             <div className="mb-4">
@@ -190,7 +204,6 @@ function DashboardPage() {
                 )}
             </div>
         </div>
-  
     );
 }
 

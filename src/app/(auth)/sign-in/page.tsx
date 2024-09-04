@@ -7,8 +7,6 @@ import Link from "next/link"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/types/ApiResponse"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -43,7 +41,6 @@ function SignInPage() {
         });
 
         if (result?.error) {
-            console.log("The result.error is --> ", result.error);
             
             if(result.error === "CredentialsSignIn"){
                 toast({
@@ -54,14 +51,17 @@ function SignInPage() {
             } else {
                 toast({
                     title: "Error",
-                    description: result.error
+                    description: result.error.substring(7) ?? "Something went wrong"
                 })
             }
         }
 
         if (result?.url) {
-            router.replace("/dashboard");
+            
+            router.push("/dashboard");
         }
+
+     
 
         setIsSubmitting(false);
     }
@@ -69,8 +69,8 @@ function SignInPage() {
     
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-800">
-            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+        <div className="flex justify-center items-center min-h-screen bg-white">
+            <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg border-solid  border-[1.9px] border-gray-300">
 
                 <div className="text-center">
                     <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Join Mystry Message</h1>
@@ -91,7 +91,8 @@ function SignInPage() {
                                         placeholder="email or username"
                                         type="text" 
                                         {...field}
-                                        disabled={isSubmitting} 
+                                        disabled={isSubmitting}
+                                        className="focus:outline-none focus-visible:ring-0 border border-slate-300 focus-visible:border-[1.8px] focus-visible:border-slate-500 focus-visible:ring-offset-0" 
                                     />
                                 </FormControl>
                                 <FormMessage />

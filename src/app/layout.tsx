@@ -4,7 +4,7 @@ import "./globals.css";
 import React from "react";
 import { Toaster } from "@/components/ui/toaster"
 import AuthProvider from "@/context/AuthProvider";
-import Navbar from "@/components/Navbar";
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,11 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={inter.className}>
-          <div className="flex flex-col min-h-screen bg-gray-800">
-            <Navbar />
-            {children}
-          </div>
-          {/* {children} */}
+          {children}
           <Toaster />
         </body>
       </AuthProvider>
