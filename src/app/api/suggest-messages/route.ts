@@ -11,15 +11,18 @@ export async function POST(req: Request) {
     console.log("In Suggesting Messages Post Route");
     
     try {
-        
-        const prompt = "Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. These questions are for an anonymous social messaging platform, like Qooh.me, and should be suitable for a diverse audience. Avoid personal or sensitive topics, focusing instead on universal themes that encourage friendly interaction. For example, your output should be structured like this: 'What’s a hobby you’ve recently started?||If you could have dinner with any historical figure, who would it be?||What’s a simple thing that makes you happy?'. Ensure the questions are intriguing, foster curiosity, and contribute to a positive and welcoming conversational environment.";
+
+        const basePrompt = "Give me new suggestions every time. Create a list of three open-ended and engaging questions for a social messaging platform. Each question should be separated by '||'. These questions should be different from previous ones. Here is a random seed for generating different questions: ";
+
+        const randomSeed = Math.random().toString(36).substring(7); // Generate a random seed
+
+        const prompt = basePrompt + randomSeed;
 
         const result = await streamText({
             model: google('gemini-1.0-pro'),
             prompt: prompt,
-            temperature: 0.7
+            temperature: 0.7, // Adjust temperature to control randomness
         });
-
 
         return result.toDataStreamResponse();
     
