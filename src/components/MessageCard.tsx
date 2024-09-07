@@ -65,13 +65,13 @@ const MessageCard = ( { message, onMessageDelete }: MessageCardProps ) => {
     
 
     return (
-        <Card className="card-bordered hover:bg-slate-100">
+        <Card className="card-bordered hover:bg-slate-100 overflow-auto">
             <CardHeader>
-                <div className="flex justify-between items-start">
-                <CardTitle>{message.content}</CardTitle>
+                <div className="flex items-start justify-between">
+                <CardTitle className="max-w-[87%]">{message.content}</CardTitle>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <button className="bg-white border rounded-md border-gray-400 w-7 ml-3 hover:bg-slate-300  h-5"><X className="w-full p-1 h-full text-black"/></button>
+                        <button className="border rounded-md border-gray-400 w-7 mr-0 hover:bg-slate-300  h-5"><X className="w-full p-1 h-full text-black"/></button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>

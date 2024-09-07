@@ -36,9 +36,7 @@ function DashboardPage() {
         },
     });
 
-        
-    
-
+   
     const { register, watch, setValue } = useForm<z.infer<typeof acceptMessageSchema>>({
         resolver: zodResolver(acceptMessageSchema),
     })
@@ -124,7 +122,7 @@ function DashboardPage() {
         
         fetchMessages()
         fetchAcceptMessage()
-    }, [session, setValue, fetchAcceptMessage, fetchMessages])
+    }, [session, setValue, fetchAcceptMessage, fetchMessages, status])
     
     if (status === "loading") {
         return <SkeletonLoader />
@@ -146,6 +144,7 @@ function DashboardPage() {
 
 
     return (
+        <div className="flex-1 flex justify-center items-center">
         <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white shadow-lg rounded-lg w-full max-w-6xl">
             <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
     
@@ -203,6 +202,7 @@ function DashboardPage() {
                     <p>No messages to display.</p>
                 )}
             </div>
+        </div>
         </div>
     );
 }
